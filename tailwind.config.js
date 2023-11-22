@@ -1,14 +1,15 @@
 import { nextui } from "@nextui-org/theme";
-import type { Config } from "tailwindcss";
 
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
 	content: [
-		"./src/app/components/**/*.{js,ts,jsx,tsx,mdx}",
-		"./src/app/containers/**/*.{js,ts,jsx,tsx,mdx}",
+		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+		"./src/containers/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 		"./node_modules/@nextui-org/theme/dist/components/button.js",
 		"./node_modules/@nextui-org/theme/dist/components/input.js",
 		"./node_modules/@nextui-org/theme/dist/components/card.js",
+		"./node_modules/@nextui-org/theme/dist/components/link.js",
 	],
 	theme: {
 		extend: {
@@ -25,5 +26,3 @@ const config: Config = {
 	},
 	plugins: [nextui()],
 };
-// eslint-disable-next-line import/no-default-export
-export default config;
