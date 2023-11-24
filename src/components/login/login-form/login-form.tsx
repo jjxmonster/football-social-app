@@ -5,11 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@nextui-org/input";
 import { loginFormItems } from "@/lib/constants";
 import { SubmitButton } from "@/components/common/submit-button";
-import { loginAction } from "@/app/actions";
 import { loginFormSchema } from "@/lib/utils";
 import type { LoginInputs } from "@/lib/types";
 import { useState } from "react";
 import { MessageCard } from "@/components/common/message-card";
+import { signIn, useSession } from "next-auth/react";
 
 export const LoginForm = () => {
 	const {
@@ -22,7 +22,9 @@ export const LoginForm = () => {
 		mode: "onBlur",
 	});
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const session = useSession();
 
+	console.log(session, "SESSION");
 	const renderItems = loginFormItems.map(({ key, label, type }) => (
 		<Controller
 			key={key}
@@ -43,13 +45,19 @@ export const LoginForm = () => {
 	));
 
 	const processForm = async (data: LoginInputs) => {
-		const res = await loginAction(data);
+		const res = await signIn("credentials", {
+			redirect: false,
+			email: data.email,
+			password: data.password,
+		});
 
 		console.log(res);
-		if (res.error) {
-			setErrorMessage(res.message!);
+
+		if (!res || res.error) {
+			setErrorMessage("Something went wrong...");
 			return;
 		}
+
 		reset();
 	};
 

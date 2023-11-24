@@ -29,3 +29,9 @@ export const postLogin = async (data: LoginInputs) => {
 		cache: "no-store",
 	});
 };
+
+export const postActiveUser = async (key: string) => {
+	return fetch(`${process.env.API}/user/activate/${key}`, {
+		cache: "no-cache",
+	});
+};

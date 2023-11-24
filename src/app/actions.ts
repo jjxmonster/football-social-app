@@ -1,7 +1,7 @@
 "use server";
 
 import { registerFormSchema } from "@/lib/utils";
-import { postLogin, postRegister } from "../data/user";
+import { postLogin, postRegister } from "../data/mutations";
 import {
 	RegisterActionStatus,
 	type ResponseData,
@@ -11,48 +11,22 @@ import {
 	type UserDetails,
 } from "@/lib/types";
 
-export const loginAction = async (
-	formData: LoginInputs,
-): Promise<
-	ActionResponse<{
+export const authorizeUser = async ({ email, password }: LoginInputs) => {
+	const response = await postLogin({ email, password });
+
+	const data = (await response.json()) as ResponseData<{
 		token: string;
 		userData: UserDetails;
-	}>
-> => {
-	try {
-		const response = await postLogin(formData);
-		const data = (await response.json()) as ResponseData<{
-			token: string;
-			userData: UserDetails;
-		}>;
+	}>;
 
-		switch (data.status) {
-			case 200:
-				return {
-					error: false,
-					status: RegisterActionStatus.SUCCESS,
-					data: data.data,
-				};
-			case 403:
-				return {
-					error: true,
-					message: data.message,
-					status: RegisterActionStatus.ERROR,
-				};
-		}
-	} catch (e) {
+	if (data.status) {
 		return {
-			error: true,
-			message: "Something went wrong.",
-			status: RegisterActionStatus.ERROR,
+			userData: data.data.userData,
+			token: data.data.token,
 		};
 	}
 
-	return {
-		error: true,
-		message: "Something went wrong.",
-		status: RegisterActionStatus.ERROR,
-	};
+	return null;
 };
 
 export const registerAction = async (

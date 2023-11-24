@@ -4,16 +4,15 @@ import { Check, XCircle } from "lucide-react";
 import { Link } from "@nextui-org/link";
 import { Button } from "@nextui-org/button";
 import type { ResponseData } from "@/lib/types";
+import { postActiveUser } from "@/data/mutations";
 
 export default async function Activate({
 	params,
 }: {
 	params: { key: string };
 }) {
-	const res = await fetch(`${process.env.API}/user/activate/${params.key}`, {
-		cache: "no-cache",
-	});
-	const data = (await res.json()) as ResponseData;
+	const res = await postActiveUser(params.key);
+	const data = (await res.json()) as ResponseData<null>;
 
 	const renderMessage = () => {
 		switch (data.status) {
