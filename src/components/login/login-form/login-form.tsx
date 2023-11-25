@@ -9,7 +9,7 @@ import { loginFormSchema } from "@/lib/utils";
 import type { LoginInputs } from "@/lib/types";
 import { useState } from "react";
 import { MessageCard } from "@/components/common/message-card";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export const LoginForm = () => {
 	const {
@@ -22,9 +22,7 @@ export const LoginForm = () => {
 		mode: "onBlur",
 	});
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const session = useSession();
 
-	console.log(session, "SESSION");
 	const renderItems = loginFormItems.map(({ key, label, type }) => (
 		<Controller
 			key={key}
@@ -50,8 +48,6 @@ export const LoginForm = () => {
 			email: data.email,
 			password: data.password,
 		});
-
-		console.log(res);
 
 		if (!res || res.error) {
 			setErrorMessage("Something went wrong...");

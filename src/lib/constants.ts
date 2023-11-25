@@ -42,3 +42,29 @@ export const registerFormItems: {
 		placeholder: "**********",
 	},
 ];
+
+export const profileSetupFormItems: {
+	key: "name" | "description" | "favouriteTeam";
+	type: string;
+	label: string;
+	placeholder: string;
+}[] = [
+	{
+		key: "name",
+		type: "text",
+		label: "Nazwa użytkownika",
+		placeholder: "johndoe",
+	},
+	{
+		key: "description",
+		type: "area",
+		label: "Opis użytkownika (bio)",
+		placeholder: "",
+	},
+	{
+		key: "favouriteTeam",
+		type: "text",
+		label: "Ulubiona drużyna",
+		placeholder: "",
+	},
+];

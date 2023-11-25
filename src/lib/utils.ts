@@ -17,3 +17,15 @@ export const loginFormSchema = z.object({
 	email: z.string().email("This is not a valid email."),
 	password: z.string(),
 });
+
+export const profileSetupFormSchema = z.object({
+	name: z
+		.string()
+		.min(5, { message: "Name must be at least 5 characters long" })
+		.refine(
+			(s) => !s.includes(" "),
+			"Nazwa użytkownika nie może zawierać spacji",
+		),
+	description: z.string().optional(),
+	favouriteTeam: z.string().optional(),
+});

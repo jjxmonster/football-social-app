@@ -1,3 +1,3 @@
-import { AuthenticationLayout } from "@/containers/authentication-layout";
+import { FormLayout } from "@/containers/FormLayout";
 
-export default AuthenticationLayout;
+export default FormLayout;

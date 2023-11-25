@@ -1,5 +1,9 @@
 import type * as z from "zod";
-import type { loginFormSchema, registerFormSchema } from "./utils";
+import type {
+	loginFormSchema,
+	profileSetupFormSchema,
+	registerFormSchema,
+} from "./utils";
 
 export type ActionState = {
 	message?: string;
@@ -18,6 +22,10 @@ export type UserDetails = {
 	isProfileCompleted: boolean;
 	name?: string;
 };
+export type TeamDetails = {
+	id: string;
+	name: string;
+};
 export type ResponseData<T> = {
 	status: number;
 	message: string;
@@ -32,3 +40,4 @@ export type ActionResponse<T> = {
 
 export type RegisterInputs = z.infer<typeof registerFormSchema>;
 export type LoginInputs = z.infer<typeof loginFormSchema>;
+export type ProfileSetupInputs = z.infer<typeof profileSetupFormSchema>;

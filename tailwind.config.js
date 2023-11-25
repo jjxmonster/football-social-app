@@ -10,6 +10,7 @@ module.exports = {
 		"./node_modules/@nextui-org/theme/dist/components/input.js",
 		"./node_modules/@nextui-org/theme/dist/components/card.js",
 		"./node_modules/@nextui-org/theme/dist/components/link.js",
+		"./node_modules/@nextui-org/theme/dist/components/select.js",
 	],
 	theme: {
 		extend: {

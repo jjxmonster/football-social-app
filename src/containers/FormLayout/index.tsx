@@ -1,19 +1,6 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 
-export async function AuthenticationLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
-	const session = await getServerSession(authOptions);
-
-	if (session) {
-		redirect("/");
-	}
-
+export async function FormLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<main className="grid h-screen w-screen bg-gray-900 md:grid-cols-2">
 			<aside className="hidden md:block">
