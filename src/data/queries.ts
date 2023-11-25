@@ -5,9 +5,7 @@ export const getUserData = async (token: string) => {
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
-		next: {
-			tags: ["user"],
-		},
+		cache: "no-store",
 	});
 
 	const data = (await response.json()) as ResponseData<UserDetails>;
@@ -38,22 +36,11 @@ export const getAllTeams = async (token: string) => {
 	return null;
 };
 
-export const checkUsername = async (username: string, token: string) => {
-	const response = await fetch(
-		`${process.env.API}/user/check-name/?name=${username}`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-			cache: "no-store",
+export const getUsernameExists = async (username: string, token: string) => {
+	return fetch(`${process.env.API}/user/check-name?name=${username}`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
 		},
-	);
-
-	const data = (await response.json()) as ResponseData<{ exists: boolean }>;
-
-	if (data.status === 200) {
-		return data.data;
-	}
-
-	return null;
+		cache: "no-store",
+	});
 };

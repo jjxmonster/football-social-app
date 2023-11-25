@@ -8,22 +8,28 @@ import { SubmitButton } from "@/components/common/submit-button";
 import { profileSetupFormSchema } from "@/lib/utils";
 import type { ProfileSetupInputs, TeamDetails } from "@/lib/types";
 import { Select, SelectItem } from "@nextui-org/select";
+import type { Session } from "next-auth";
+import { checkUsername, updateUserProfile } from "@/app/actions";
 
 interface ProfileSetupFormProps {
 	teams: TeamDetails[];
+	session: Session;
 }
 
-export const ProfileSetupForm = ({ teams }: ProfileSetupFormProps) => {
+export const ProfileSetupForm = ({
+	teams,
+	session: { accessToken },
+}: ProfileSetupFormProps) => {
 	const {
 		handleSubmit,
 		control,
-
+		setError,
 		formState: { errors },
 	} = useForm<ProfileSetupInputs>({
 		resolver: zodResolver(profileSetupFormSchema),
 		mode: "onBlur",
 	});
-	console.log(teams);
+
 	const renderItems = profileSetupFormItems.map(
 		({ key, label, placeholder, type }) => {
 			return (
@@ -82,8 +88,16 @@ export const ProfileSetupForm = ({ teams }: ProfileSetupFormProps) => {
 		},
 	);
 
-	const processForm = async (data: unknown) => {
-		console.log(data);
+	const processForm = async (data: ProfileSetupInputs) => {
+		const { name } = data;
+		const checkUserNameRes = await checkUsername(name, accessToken);
+
+		if (checkUserNameRes && checkUserNameRes.exists) {
+			setError("name", { message: "Uzytkownik o takiej nazwie juz istnieje" });
+			return;
+		}
+
+		await updateUserProfile(data, accessToken);
 	};
 
 	return (
@@ -94,7 +108,6 @@ export const ProfileSetupForm = ({ teams }: ProfileSetupFormProps) => {
 		>
 			<div className="space-y-3">{renderItems}</div>
 			<SubmitButton label="Zapisz" />
-			{/* <MessageCard transparent type="error" message={""} /> */}
 		</form>
 	);
 };

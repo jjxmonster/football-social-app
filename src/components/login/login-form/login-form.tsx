@@ -48,7 +48,7 @@ export const LoginForm = () => {
 			email: data.email,
 			password: data.password,
 		});
-
+		console.log(res);
 		if (!res || res.error) {
 			setErrorMessage("Something went wrong...");
 			return;

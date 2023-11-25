@@ -5,5 +5,5 @@ module.exports = {
   printWidth: 80,
   useTabs: true,
   plugins: ["prettier-plugin-tailwindcss"],
-  tailwindConfig: "./tailwind.config.ts",
+  tailwindConfig: "./tailwind.config.js",
 };

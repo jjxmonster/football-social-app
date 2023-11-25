@@ -6,8 +6,7 @@ interface AuthenticatedAppProps {
 }
 
 export const AuthenticatedApp = ({ user }: AuthenticatedAppProps) => {
-	console.log(user);
-
+	console.log(user, "IS COMPLETED");
 	if (!user.isProfileCompleted) {
 		return redirect("/profile-setup");
 	}

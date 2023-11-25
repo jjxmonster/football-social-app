@@ -18,7 +18,7 @@ export type UserDetails = {
 	id: string;
 	avatarUrl?: string;
 	description?: string;
-	favouriteColor?: string;
+	favouriteTeam?: string;
 	isProfileCompleted: boolean;
 	name?: string;
 };

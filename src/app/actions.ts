@@ -1,7 +1,7 @@
 "use server";
 
 import { registerFormSchema } from "@/lib/utils";
-import { postLogin, postRegister } from "../data/mutations";
+import { patchProfileSetup, postLogin, postRegister } from "../data/mutations";
 import {
 	RegisterActionStatus,
 	type ResponseData,
@@ -10,6 +10,9 @@ import {
 	type RegisterInputs,
 	type UserDetails,
 } from "@/lib/types";
+import { getUsernameExists } from "@/data/queries";
+import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 
 export const authorizeUser = async ({ email, password }: LoginInputs) => {
 	const response = await postLogin({ email, password });
@@ -18,8 +21,8 @@ export const authorizeUser = async ({ email, password }: LoginInputs) => {
 		token: string;
 		userData: UserDetails;
 	}>;
-
-	if (data.status) {
+	console.log(data, "AUTH DATA");
+	if (data.status === 200) {
 		return {
 			userData: data.data.userData,
 			token: data.data.token,
@@ -69,4 +72,31 @@ export const registerAction = async (
 		message: "Something went wrong.",
 		status: RegisterActionStatus.ERROR,
 	};
+};
+
+export const checkUsername = async (username: string, token: string) => {
+	const response = await getUsernameExists(username, token);
+	const data = (await response.json()) as ResponseData<{ exists: boolean }>;
+
+	if (data.status === 200) {
+		return data.data;
+	}
+
+	return null;
+};
+
+export const updateUserProfile = async (
+	payload: Pick<UserDetails, "name" | "description" | "favouriteTeam">,
+	token: string,
+) => {
+	const response = await patchProfileSetup(payload, token);
+
+	const data = (await response.json()) as ResponseData<UserDetails>;
+
+	if (data.status === 200) {
+		revalidateTag("user");
+		redirect("/");
+	}
+
+	return null;
 };

@@ -20,7 +20,7 @@ const ProfileSetup = async () => {
 				Witamy w społeczności piłkarskich pasjonatów! Uzupełnij swoje dane i
 				dołącz do gry.
 			</p>
-			<ProfileSetupForm teams={data} />
+			<ProfileSetupForm teams={data} session={session} />
 		</div>
 	);
 };

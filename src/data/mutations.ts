@@ -1,4 +1,4 @@
-import type { LoginInputs, RegisterInputs } from "@/lib/types";
+import type { LoginInputs, RegisterInputs, UserDetails } from "@/lib/types";
 
 export const postRegister = async (data: RegisterInputs) => {
 	const { email, password } = data;
@@ -32,6 +32,27 @@ export const postLogin = async (data: LoginInputs) => {
 
 export const postActiveUser = async (key: string) => {
 	return fetch(`${process.env.API}/auth/activate/${key}`, {
-		cache: "no-cache",
+		cache: "no-store",
+	});
+};
+
+export const patchProfileSetup = async (
+	payload: Pick<UserDetails, "name" | "description" | "favouriteTeam">,
+	token: string,
+) => {
+	const { name, description, favouriteTeam } = payload;
+
+	return fetch(`${process.env.API}/user`, {
+		method: "PATCH",
+		body: JSON.stringify({
+			name,
+			description: description ?? null,
+			favoriteTeam: favouriteTeam ?? null,
+		}),
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${token}`,
+		},
+		cache: "no-store",
 	});
 };
